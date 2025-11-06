@@ -72,6 +72,9 @@
     <ClCompile Include="light.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="light.h">
       <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ヘッダー ファイル\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

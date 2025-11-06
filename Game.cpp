@@ -12,6 +12,7 @@
 //*********************************************************************
 #include "Game.h"
 #include "polygon.h"
+#include "model.h"
 
 //*********************************************************************
 // 
@@ -54,6 +55,7 @@
 void InitGame(void)
 {
 	InitPolygon();
+	InitModel();
 }
 
 //=====================================================================
@@ -62,6 +64,7 @@ void InitGame(void)
 void UninitGame(void)
 {
 	UninitPolygon();
+	UninitModel();
 }
 
 //=====================================================================
@@ -70,6 +73,7 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	UpdatePolygon();
+	UpdateModel();
 }
 
 //=====================================================================
@@ -78,4 +82,5 @@ void UpdateGame(void)
 void DrawGame(void)
 {
 	DrawPolygon();
+	DrawModel();
 }

@@ -20,7 +20,7 @@
 //*********************************************************************
 #define TEXTURE_FILENAME	"data\\TEXTURE\\sakai000.png"
 #define INIT_POS			D3DXVECTOR3(0.0f, 0.0f, 0.0f)
-#define INIT_SIZE			D3DXVECTOR3(1000.0f, 0.0f, 1000.0f)
+#define INIT_SIZE			D3DXVECTOR3(100.0f, 0.0f, 100.0f)
 #define INIT_COLOR			D3DXCOLOR_WHITE
 
 //*********************************************************************

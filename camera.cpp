@@ -19,7 +19,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-
+#define CAMERA_SPEED	(5.0f)
 
 //*********************************************************************
 // 
@@ -58,6 +58,8 @@ void InitCamera(void)
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
+	g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * 200;
+	g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * 200;
 }
 
 //=====================================================================
@@ -73,39 +75,109 @@ void UninitCamera(void)
 //=====================================================================
 void UpdateCamera(void)
 {
-	D3DXVECTOR3 move = D3DXVECTOR3_ZERO;
-
 	if (GetKeyboardPress(DIK_A))
 	{
-		move.x -= 10.0f;
+		g_camera.posV += D3DXVECTOR3(
+			-cosf(g_camera.rot.y),
+			0.0f,
+			sinf(g_camera.rot.y)
+		) * CAMERA_SPEED;
+
+		g_camera.posR += D3DXVECTOR3(
+			-cosf(g_camera.rot.y),
+			0.0f,
+			sinf(g_camera.rot.y)
+		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_D))
 	{
-		move.x += 10.0f;
-	}
-	if (GetKeyboardPress(DIK_E))
-	{
-		move.y += 10.0f;
-	}
-	if (GetKeyboardPress(DIK_Q))
-	{
-		move.y -= 10.0f;
+		g_camera.posV -= D3DXVECTOR3(
+			-cosf(g_camera.rot.y),
+			0.0f,
+			sinf(g_camera.rot.y)
+		) * CAMERA_SPEED;
+
+		g_camera.posR -= D3DXVECTOR3(
+			-cosf(g_camera.rot.y),
+			0.0f,
+			sinf(g_camera.rot.y)
+		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_W))
 	{
-		move.z += 10.0f;
+		g_camera.posV -= D3DXVECTOR3(
+			sinf(g_camera.rot.y + D3DX_PI),
+			0.0f,
+			cosf(g_camera.rot.y + D3DX_PI)
+		) * CAMERA_SPEED;
+
+		g_camera.posR -= D3DXVECTOR3(
+			sinf(g_camera.rot.y + D3DX_PI),
+			0.0f,
+			cosf(g_camera.rot.y + D3DX_PI)
+		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_S))
 	{
-		move.z -= 10.0f;
+		g_camera.posV -= D3DXVECTOR3(
+			sinf(g_camera.rot.y),
+			0.0f,
+			cosf(g_camera.rot.y)
+		) * CAMERA_SPEED;
+
+		g_camera.posR -= D3DXVECTOR3(
+			sinf(g_camera.rot.y),
+			0.0f,
+			cosf(g_camera.rot.y)
+		) * CAMERA_SPEED;
 	}
 
-	g_camera.posV += move;
-	g_camera.posR += move;
+	if (GetKeyboardPress(DIK_T))
+	{
+		g_camera.posV.y += 5.0f;
+	}
+	if (GetKeyboardPress(DIK_B))
+	{
+		g_camera.posV.y -= 5.0f;
+	}
+	if (GetKeyboardPress(DIK_Y))
+	{
+		g_camera.posR.y += 5.0f;
+	}
+	if (GetKeyboardPress(DIK_N))
+	{
+		g_camera.posR.y -= 5.0f;
+	}
+
+	if (GetKeyboardPress(DIK_Q))
+	{
+		g_camera.rot.y -= 0.05f;
+		g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * 200;
+		g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * 200;
+	}
+	if (GetKeyboardPress(DIK_E))
+	{
+		g_camera.rot.y += 0.05f;
+		g_camera.posR.x = g_camera.posV.x + sinf(g_camera.rot.y) * 200;
+		g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * 200;
+	}
+
+	if (GetKeyboardPress(DIK_Z))
+	{
+		g_camera.rot.y -= 0.05f;
+		g_camera.posV.x = g_camera.posR.x + sinf(g_camera.rot.y + D3DX_PI) * 200;
+		g_camera.posV.z = g_camera.posR.z + cosf(g_camera.rot.y + D3DX_PI) * 200;
+	}
+	if (GetKeyboardPress(DIK_C))
+	{
+		g_camera.rot.y += 0.05f;
+		g_camera.posV.x = g_camera.posR.x + sinf(g_camera.rot.y + D3DX_PI) * 200;
+		g_camera.posV.z = g_camera.posR.z + cosf(g_camera.rot.y + D3DX_PI) * 200;
+	}
 }
 
 //=====================================================================
-// 描画処理
+// カメラ設定処理
 //=====================================================================
 void SetCamera(void)
 {
@@ -139,4 +211,12 @@ void SetCamera(void)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &g_camera.mtxView);
+}
+
+//=====================================================================
+// カメラ取得処理
+//=====================================================================
+CAMERA* GetCamera(void)
+{
+	return &g_camera;
 }
