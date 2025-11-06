@@ -75,8 +75,9 @@ void UninitCamera(void)
 //=====================================================================
 void UpdateCamera(void)
 {
+	// カメラ移動
 	if (GetKeyboardPress(DIK_A))
-	{
+	{// 左
 		g_camera.posV += D3DXVECTOR3(
 			-cosf(g_camera.rot.y),
 			0.0f,
@@ -90,7 +91,7 @@ void UpdateCamera(void)
 		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_D))
-	{
+	{// 右
 		g_camera.posV -= D3DXVECTOR3(
 			-cosf(g_camera.rot.y),
 			0.0f,
@@ -104,7 +105,7 @@ void UpdateCamera(void)
 		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_W))
-	{
+	{// 前
 		g_camera.posV -= D3DXVECTOR3(
 			sinf(g_camera.rot.y + D3DX_PI),
 			0.0f,
@@ -118,7 +119,7 @@ void UpdateCamera(void)
 		) * CAMERA_SPEED;
 	}
 	if (GetKeyboardPress(DIK_S))
-	{
+	{// 後方
 		g_camera.posV -= D3DXVECTOR3(
 			sinf(g_camera.rot.y),
 			0.0f,
@@ -132,6 +133,7 @@ void UpdateCamera(void)
 		) * CAMERA_SPEED;
 	}
 
+	// [カメラ視点]上下移動
 	if (GetKeyboardPress(DIK_T))
 	{
 		g_camera.posV.y += 5.0f;
@@ -140,6 +142,8 @@ void UpdateCamera(void)
 	{
 		g_camera.posV.y -= 5.0f;
 	}
+
+	// [カメラ注視点]上下移動
 	if (GetKeyboardPress(DIK_Y))
 	{
 		g_camera.posR.y += 5.0f;
@@ -149,6 +153,7 @@ void UpdateCamera(void)
 		g_camera.posR.y -= 5.0f;
 	}
 
+	// [カメラ注視点]左右回転
 	if (GetKeyboardPress(DIK_Q))
 	{
 		g_camera.rot.y -= 0.05f;
@@ -162,6 +167,7 @@ void UpdateCamera(void)
 		g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.y) * 200;
 	}
 
+	// [カメラ視点]左右回転
 	if (GetKeyboardPress(DIK_Z))
 	{
 		g_camera.rot.y -= 0.05f;
