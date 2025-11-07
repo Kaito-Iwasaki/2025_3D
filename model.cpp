@@ -21,7 +21,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-
+#define MAX_TEXTURE		(8)
 
 //*********************************************************************
 // 
@@ -50,6 +50,7 @@
 // 
 //*********************************************************************
 LPD3DXMESH g_pMeshModel = NULL;			// メッシュ（頂点情報）へのポインタ
+LPDIRECT3DTEXTURE9 g_apTextureModel[MAX_TEXTURE] = {};
 LPD3DXBUFFER g_pBuffMatModel = NULL;	// マテリアルへのポインタ
 DWORD g_dwNumMatModel = 0;				// マテリアル数
 BASEOBJECT g_objModel;
@@ -65,9 +66,9 @@ void InitModel(void)
 	memset(&g_objModel, 0, sizeof(BASEOBJECT));
 	g_objModel.bVisible = true;
 
-	// Xファイルの読込
+	// Xファイルの読み込み
 	D3DXLoadMeshFromX(
-		"data\\MODEL\\Perfect_Animal2.x",
+		"data\\MODEL\\SmileMan.x",
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -76,6 +77,24 @@ void InitModel(void)
 		&g_dwNumMatModel,
 		&g_pMeshModel
 	);
+
+	D3DXMATERIAL* pMat;
+
+	// マテリアルデータへのポインタを取得
+	pMat = (D3DXMATERIAL*)g_pBuffMatModel->GetBufferPointer();
+
+	// テクスチャの読み込み
+	for (int i = 0; i < (int)g_dwNumMatModel; i++)
+	{
+		if (pMat[i].pTextureFilename != NULL)
+		{// テクスチャファイルが存在する
+			D3DXCreateTextureFromFile(
+				pDevice,
+				pMat[i].pTextureFilename,
+				&g_apTextureModel[i]
+			);
+		}
+	}
 }
 
 //=====================================================================
@@ -83,6 +102,15 @@ void InitModel(void)
 //=====================================================================
 void UninitModel(void)
 {
+	for (int i = 0; i < (int)g_dwNumMatModel; i++)
+	{
+		if (g_apTextureModel[i] != NULL)
+		{
+			g_apTextureModel[i]->Release();
+			g_apTextureModel[i] = NULL;
+		}
+	}
+
 	if (g_pMeshModel != NULL)
 	{// メッシュの破棄
 		g_pMeshModel->Release();
@@ -187,7 +215,7 @@ void DrawModel(void)
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		// テクスチャの設定
-		pDevice->SetTexture(0, NULL);
+		pDevice->SetTexture(0, g_apTextureModel[nCntMat]);
 
 		// モデル（パーツ）の描画
 		g_pMeshModel->DrawSubset(nCntMat);

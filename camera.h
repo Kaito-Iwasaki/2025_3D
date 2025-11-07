@@ -34,6 +34,7 @@ typedef struct
 	D3DXVECTOR3 rot;			// 向き
 	D3DXMATRIX mtxProjection;	// プロジェクションマトリックス
 	D3DXMATRIX mtxView;			// ビューマトリックス
+	float fDistanceFromVToR;
 }CAMERA;
 
 //*********************************************************************
